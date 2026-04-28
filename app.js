@@ -143,7 +143,7 @@ function renderQuiz() {
     const isAnswered = currentAnswer !== null;
 
     let scoreHtml = '';
-    if (state.options.showScore) {
+    if (state.options.showScore && state.mode === 'practice') {
         const currentScore = state.userAnswers.filter(a => a && a.isCorrect).length;
         scoreHtml = `<span>Score: ${currentScore}</span>`;
     }
@@ -152,14 +152,14 @@ function renderQuiz() {
     let nextBtnDisabled = (state.mode === 'practice' && !isAnswered) ? 'disabled' : '';
 
     appDiv.innerHTML = `
-        <div class="glass-panel" key="${state.currentIndex}">
+        <div class="glass-panel" key="${state.currentIndex}" ${state.mode === 'test' ? 'style="animation: none;"' : ''}>
             <div class="quiz-header">
                 <span>Question ${state.currentIndex + 1} of ${state.currentQuiz.length}</span>
                 ${scoreHtml}
                 <span style="text-transform: capitalize; color: var(--primary);">${state.mode} Mode</span>
             </div>
             <div class="progress-bar-container">
-                <div class="progress-bar" style="width: ${progress}%"></div>
+                <div class="progress-bar" style="width: ${progress}%${state.mode === 'test' ? '; transition: none;' : ''}"></div>
             </div>
 
             <div class="question-text">${q.question}</div>
